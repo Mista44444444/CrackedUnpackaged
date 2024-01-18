@@ -1,5 +1,7 @@
 *{
-    box-sizing: border-box
+    box-sizing: border-box;
+    user-select: none;
+    text-align: center;
 }
 html{
     height: 100%;
@@ -12,4 +14,36 @@ body{
     font-family: Helvetica;
     padding: 0;
     margin: 0;
+}
+.start_menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    transition: 0.5s;
+}
+.title {
+    margin: 0 0 18% 0;
+    font-size: 2vw;
+}
+.start_button, .option_button{
+    cursor: pointer;
+    width: 10%;
+    height: 10%;
+}
+.options{
+    transition: 1s;
+}
+.x{
+    cursor: pointer;
+}
+@keyframes Skyskrapers {
+    0%{
+        left: 0%;
+    }
+    100%{
+        left: 100%;
+    }
 }
