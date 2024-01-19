@@ -60,6 +60,9 @@ body{
     cursor: pointer;
 }
 .options{
+    position: absolute;
+    right: 20%;
+    top: 20%;
     transition: 1s;
 }
 .x{
