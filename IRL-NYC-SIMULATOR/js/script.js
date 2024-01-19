@@ -11,7 +11,7 @@ let start_menu = {
         <div class="title">Cracked</div>
         <div class="start_button" onclick="startGame()">start</div>
         <div class="option_button" onclick="openWindow()">options</div>
-        <div class="options" style="opacity: 0;">options <div class="x" onclick="closeOptions()">x</div></div>  
+        <div class="options" style="opacity: 0;">something <div class="x" onclick="closeOptions()">x</div></div>  
     </div>
     `,
     hash: `startMenu`
