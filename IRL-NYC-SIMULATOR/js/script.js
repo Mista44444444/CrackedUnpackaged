@@ -17,11 +17,18 @@ let start_menu = {
     hash: `startMenu`
 }
 let intro_screen = {
-    code: ``,
+    code: `<video width="100%" height="100%" style="background:black;" autoplay>
+    <source src="img/intro.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+    </video>
+    <div onclick="ctrlScreen(game_screen)" class="skip">skip</div>
+    `,
     hash: `intro`
 }
 let game_screen = {
-    code: ``,
+    code: `
+    this is the game
+    `,
     hash: `game`
 }
 
@@ -38,6 +45,14 @@ function ctrlScreen(HTML){
             bac.innerHTML += `<img src="img/b${getRandomNumber(1,3)}.png" class="Building" style="animation: ${style}s Skyskrapers ease-out;">`;
         }, time);
     }
+    if(HTML.hash == "intro"){
+        clearInterval(buildingsInterval);
+        game.style.display = "";
+        game.style.opacity = "1";
+        setTimeout(() => {
+            ctrlScreen(game_screen);
+        }, 10000);
+    }
 }
 ctrlScreen(start_menu);
 
@@ -50,16 +65,20 @@ function reinitiateLET(){
 //Function to start the game
 function startGame(){
     reinitiateLET();
-    setTimeout(() => {
-        game.style.opacity = "0";
-        game.style.display = "none";
-    }, 100);
+    game.style.display = "none";
+    game.style.opacity = "0";
+    ctrlScreen(intro_screen);
 }
 
 //Opens options window
 function openWindow(){
     reinitiateLET();
-    options.style.opacity = "1";
+    if(options.style.opacity == "1"){
+        options.style.opacity = "0";
+    }
+    else{
+        options.style.opacity = "1";
+    }
 }
 
 //Closes options
