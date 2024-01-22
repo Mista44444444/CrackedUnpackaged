@@ -1,0 +1,17 @@
+{
+  "name": "Cracked",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "main.js",
+  "author": "Richard Tsytsylin, Yung",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.1.4"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "update-electron-app": "^3.0.0"
+  }
+}
