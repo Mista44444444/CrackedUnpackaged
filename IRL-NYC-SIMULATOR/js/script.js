@@ -3,6 +3,10 @@ let time = getRandomNumber(2501,7501);
 let game = document.querySelector(".game");
 let options = document.querySelector(".options");
 let buildingsInterval;
+let musicTimeout = setInterval(() => {
+    audio.reset(0);
+    audio.play(0);
+}, 9600);
 
 let start_menu = {
     code: `
@@ -14,7 +18,7 @@ let start_menu = {
         <div class="options" style="opacity: 0;">something <div class="x" onclick="closeOptions()">x</div></div>  
     </div>
     `,
-    hash: `startMenu`
+    name: `startMenu`
 }
 let intro_screen = {
     code: `<video width="100%" height="100%" style="background:black;" autoplay>
@@ -23,20 +27,20 @@ let intro_screen = {
     </video>
     <div onclick="ctrlScreen(game_screen)" class="skip">skip</div>
     `,
-    hash: `intro`
+    name: `intro`
 }
 let game_screen = {
     code: `
     this is the game
     `,
-    hash: `game`
+    name: `game`
 }
 
 //Function to change the screens
 function ctrlScreen(HTML){
     game.innerHTML = HTML.code;
-    window.location.hash = HTML.hash
-    if(HTML.hash == "startMenu"){
+    window.location.name = HTML.name
+    if(HTML.name == "startMenu"){
         buildingsInterval = setInterval(() => {
             time = getRandomNumber(2501,7501);
             let bac = document.querySelector(".background");
@@ -45,7 +49,7 @@ function ctrlScreen(HTML){
             bac.innerHTML += `<img src="img/b${getRandomNumber(1,3)}.png" class="Building" style="animation: ${style}s Skyskrapers ease-out;">`;
         }, time);
     }
-    if(HTML.hash == "intro"){
+    if(HTML.name == "intro"){
         clearInterval(buildingsInterval);
         game.style.display = "";
         game.style.opacity = "1";
@@ -65,6 +69,9 @@ function reinitiateLET(){
 //Function to start the game
 function startGame(){
     reinitiateLET();
+    clearTimeout(musicTimeout);
+    audio.pause(0);
+    audio.reset(0);
     game.style.display = "none";
     game.style.opacity = "0";
     ctrlScreen(intro_screen);

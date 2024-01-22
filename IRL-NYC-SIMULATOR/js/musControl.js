@@ -1,16 +1,15 @@
 class Audio {
     //Tracks
     tracks = [
-        
+        document.querySelector(".audio1")
     ]
 
-    constructor() { this.pauseAll(); }
+    constructor() { this.pauseAll(); this.play(0) }
 
     //Pauses every track
     pauseAll(){
         this.tracks.forEach(function(track) {
             track.pause();
-            track.volume = volume.value / 100;
         }, this);
     }
 
@@ -18,7 +17,7 @@ class Audio {
     playAll(){
         this.tracks.forEach(function(track) {
             track.play();
-            track.volume = volume.value / 100;
+            track.volume = 1;
         }, this);
     }
 
@@ -36,7 +35,12 @@ class Audio {
     reset(index){
         this.tracks[index].currentTime = 0;
     }
-
+    
+    //Sets current time from a varaible for the track
+    setTime(index, time){
+        this.tracks[index].currentTime = time;
+    }
+    
     //Changes volume of the track
     volumeAll(value){
         this.tracks.forEach(function(track) {
