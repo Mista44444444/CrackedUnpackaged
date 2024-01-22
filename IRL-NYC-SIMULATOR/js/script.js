@@ -3,10 +3,16 @@ let time = getRandomNumber(2501,7501);
 let game = document.querySelector(".game");
 let options = document.querySelector(".options");
 let buildingsInterval;
+let playerSpeedY = 0.5;
+let playerSpeedX = 0.25;
+let playerY = -18;
+let playerX = -5;
 let musicTimeout = setInterval(() => {
     audio.reset(0);
     audio.play(0);
 }, 9600);
+let map;
+let player;
 
 let start_menu = {
     code: `
@@ -31,7 +37,8 @@ let intro_screen = {
 }
 let game_screen = {
     code: `
-    this is the game
+    <img src="img/player.png"class="player">
+    <img class="map" src="img/map.png" style="left: 0%;top: 0%;">
     `,
     name: `game`
 }
@@ -56,6 +63,64 @@ function ctrlScreen(HTML){
         setTimeout(() => {
             ctrlScreen(game_screen);
         }, 10000);
+    }
+    if(HTML.name == "game"){
+        map = document.querySelector(".map");
+        map.style.top = `${playerY}%`;
+        map.style.left = `${playerX}%`;
+        player = document.querySelector(".player");
+        let keysPressed = {};
+        document.addEventListener('keydown', function(event) {
+        keysPressed[event.key] = true;
+        if (keysPressed['a'] && keysPressed['w']) {
+            // Move the player diagonally up and left
+            playerX += playerSpeedX;
+            playerY += playerSpeedY;
+        } else if (keysPressed['a'] && keysPressed['s']) {
+            // Move the player diagonally down and left
+            playerX += playerSpeedX;
+            playerY -= playerSpeedY;
+        } else if (keysPressed['d'] && keysPressed['w']) {
+            // Move the player diagonally up and right
+            playerX -= playerSpeedX;
+            playerY += playerSpeedY;
+        } else if (keysPressed['d'] && keysPressed['s']) {
+            // Move the player diagonally down and right
+            playerX -= playerSpeedX;
+            playerY -= playerSpeedY;
+        } else if (keysPressed['a']) {
+            // Move the player left
+            playerX += playerSpeedX;
+        } else if (keysPressed['w']) {
+            // Move the player up
+            playerY += playerSpeedY;
+        } else if (keysPressed['s']) {
+            // Move the player down
+            playerY -= playerSpeedY;
+        } else if (keysPressed['d']) {
+            // Move the player right
+            playerX -= playerSpeedX;
+        }
+
+        if (playerX > 45) {
+            playerX = 45;
+        } else if (playerX < -44) {
+            playerX = -44;
+        }
+
+        if (playerY > 36) {
+            playerY = 36;
+        } else if (playerY < -35) {
+            playerY = -35;
+        }
+
+        map.style.top = `${playerY}%`;
+        map.style.left = `${playerX}%`;
+        });
+
+        document.addEventListener('keyup', function(event) {
+        delete keysPressed[event.key];
+        });        
     }
 }
 ctrlScreen(start_menu);
