@@ -6,6 +6,7 @@
     box-sizing: border-box;
     user-select: none;
     text-align: center;
+    -webkit-user-drag: none;
 }
 html{
     height: 100%;
@@ -100,7 +101,7 @@ body{
     justify-content: center;
 }
 .player {
-    width: 9%;
+    width: 7%;
 }
 .map {
     z-index: -1;
