@@ -9,7 +9,8 @@
     "electron": "^28.1.4"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "install": "npm install"
   },
   "dependencies": {
     "update-electron-app": "^3.0.0"

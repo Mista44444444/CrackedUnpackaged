@@ -6,7 +6,7 @@ let start_menu = {
         <div class="title">Cracked</div>
         <div class="start_button" onclick="startGame()">start</div>
         <div class="option_button" onclick="openOptWindow()">options</div>
-        <div class="options" style="opacity: 0;">something <div class="x" onclick="closeOptions()">x</div></div>  
+        <div class="options" style="opacity: 0;"><div class="x" onclick="closeOptions()">x</div>something</div>  
     </div>
     `,
     name: `startMenu`

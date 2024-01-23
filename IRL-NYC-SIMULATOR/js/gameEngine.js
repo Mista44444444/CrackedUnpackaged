@@ -1,16 +1,16 @@
 //Initializing varaibles
-let playerSpeedY = 0.5;
-let playerSpeedX = 0.25;
-let playerY = -18;
-let playerX = -5;
+let playerSpeedY = 2.5;
+let playerSpeedX = 2.5;
+let playerY = -116;
+let playerX = -90;
 let lastButton;
 let map;
 let player;
 
 function startGameEngine(){
     map = document.querySelector(".map");
-    map.style.top = `${playerY}%`;
-    map.style.left = `${playerX}%`;
+    map.style.top = `${playerY}px`;
+    map.style.left = `${playerX}px`;
     player = document.querySelector(".player");
     let keysPressed = {};
     document.addEventListener('keydown', function(event) {
@@ -86,23 +86,23 @@ function startGameEngine(){
     }
 
     //Borders
-    if (playerX > 45) {
-        playerX = 45;
+    if (playerX > 818) {
+        playerX = 818;
     } 
-    else if (playerX < -44) {
-        playerX = -44;
+    else if (playerX < -817.5) {
+        playerX = -817.5;
     }
 
-    if (playerY > 36) {
-        playerY = 36;
+    if (playerY > 393.5) {
+        playerY = 393.5;
     } 
-    else if (playerY < -35) {
-        playerY = -35;
+    else if (playerY < -391) {
+        playerY = -391;
     }
 
     //Sets the players new position
-    map.style.top = `${playerY}%`;
-    map.style.left = `${playerX}%`;
+    map.style.top = `${playerY}px`;
+    map.style.left = `${playerX}px`;
     });
 
     document.addEventListener('keyup', function(event) {
