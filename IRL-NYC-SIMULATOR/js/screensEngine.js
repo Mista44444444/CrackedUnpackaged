@@ -22,7 +22,7 @@ let intro_screen = {
 }
 let Mgame_screen = {
     code: `
-    <img src="img/player.png"class="player">
+    <img src="img/player_front.png"class="player">
     <img class="map" src="img/map.png" style="left: 0%;top: 0%;">
     `,
     name: `game`

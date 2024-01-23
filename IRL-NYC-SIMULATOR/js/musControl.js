@@ -4,7 +4,10 @@ class Audio {
         document.querySelector(".audio1")
     ]
 
-    constructor() { this.pauseAll(); this.play(0) }
+    constructor() { 
+        this.pauseAll(); 
+        this.play(0) 
+    }
 
     //Pauses every track
     pauseAll(){

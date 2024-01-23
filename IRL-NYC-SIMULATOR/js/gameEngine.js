@@ -1,20 +1,44 @@
 //Initializing varaibles
-let playerSpeedY = 2.5;
-let playerSpeedX = 2.5;
+let playerSpeedY = 1.25;
+let playerSpeedX = 1.25;
 let playerY = -116;
 let playerX = -90;
+let keysPressed = {};
 let lastButton;
 let map;
 let player;
 
 function startGameEngine(){
+    clearTimeout(introTimeout)
     map = document.querySelector(".map");
     map.style.top = `${playerY}px`;
     map.style.left = `${playerX}px`;
     player = document.querySelector(".player");
-    let keysPressed = {};
+    setInterval(gameLoop, 10);
     document.addEventListener('keydown', function(event) {
     keysPressed[event.key] = true;
+    });
+
+    document.addEventListener('keyup', function(event) {
+    switch(lastButton){
+        case "w":
+            player.src = "img/player_back.png";
+            break;
+        case "a":
+            player.src = "img/player_left.png";
+            break;
+        case "s":
+            player.src = "img/player_front.png";
+            break;
+        case "d":
+            player.src = "img/player_right.png";
+            break;
+    }
+    delete keysPressed[event.key];
+    });   
+}
+
+function gameLoop(){
     //Movement
     if (keysPressed['a'] && keysPressed['w']) {
         // Move the player diagonally up and left
@@ -103,23 +127,4 @@ function startGameEngine(){
     //Sets the players new position
     map.style.top = `${playerY}px`;
     map.style.left = `${playerX}px`;
-    });
-
-    document.addEventListener('keyup', function(event) {
-    switch(lastButton){
-        case "w":
-            player.src = "img/player_back.png";
-            break;
-        case "a":
-            player.src = "img/player_left.png";
-            break;
-        case "s":
-            player.src = "img/player_front.png";
-            break;
-        case "d":
-            player.src = "img/player_right.png";
-            break;
-    }
-    delete keysPressed[event.key];
-    });   
 }

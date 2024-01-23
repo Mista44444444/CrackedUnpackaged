@@ -4,6 +4,7 @@ let game = document.querySelector(".game");
 let options = document.querySelector(".options");
 let buildingsInterval;
 let bac;
+let introTimeout;
 let musicTimeout = setInterval(() => {
     audio.reset(0);
     audio.play(0);
@@ -52,7 +53,7 @@ function switchToIntroScreen(){
     clearInterval(buildingsInterval);
     game.style.display = "";
     game.style.opacity = "1";
-    setTimeout(() => {
+    introTimeout = setTimeout(() => {
         ctrlScreen(Mgame_screen);
     }, 10000);
 }
