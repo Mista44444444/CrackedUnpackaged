@@ -80,9 +80,11 @@ body{
 .x{
     cursor: pointer;
     position: relative;
-    top: -10%;
     left: 42%;
     font-size: 2vw;
+}
+#volume{
+    cursor: pointer;
 }
 .skip{
     cursor: pointer;
@@ -98,6 +100,31 @@ body{
     font-size: 2vw;
     align-items: center;
     justify-content: center;
+}
+.menuButton {
+    position: absolute;
+    left: 1%;
+    top: 1%;
+    width: 2%;
+    z-index: 1;
+    cursor: pointer;
+}
+.menu {
+    position: fixed;
+    z-index: 2;
+    background: #ffffff;
+    width: 20%;
+    height: 60%;
+    transition: 1s;
+    border: blue 4px solid;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+.exitMButton, .exitButton, .unPause{
+    cursor: pointer;
 }
 .player {
     width: 100px;

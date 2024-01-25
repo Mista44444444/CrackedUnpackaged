@@ -9,6 +9,11 @@ function getRandomNumber(start, end) {
     return Math.floor(Math.random() * (end - start + 1)) + start;
 }
 
+//Reverses a number
+function reverse(num) {
+    return num -= 2 * num
+}
+
 // Checks if a str is made out of only numbers
 function isNumeric(str) {
     return /^\d+$/.test(str);

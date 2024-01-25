@@ -5,7 +5,8 @@ class Audio {
     ]
 
     constructor() { 
-        this.pauseAll(); 
+        this.pauseAll();
+        this.volumeAll(50); 
         this.play(0) 
     }
 
@@ -49,6 +50,11 @@ class Audio {
         this.tracks.forEach(function(track) {
             track.volume = value / 100;
         }, this);
+    }
+
+    //Returns the current voluma value for all tracks
+    volumeValue(){
+        return this.tracks[0].volume * 100;
     }
 
     //Changes volume of the track

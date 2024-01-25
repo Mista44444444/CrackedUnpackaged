@@ -7,35 +7,26 @@ let keysPressed = {};
 let lastButton;
 let map;
 let player;
+let gameLooping;
 
 function startGameEngine(){
-    clearTimeout(introTimeout)
+    clearTimeout(introTimeout);
+    clearInterval(buildingsInterval);
+    menuState = 0;  
+    start_menu.code = `
+    <div class="background" style="position: absolute; z-index: -1;"></div>
+    <div class="on_top_of_background">
+        <div class="title">Cracked</div>
+        <div class="start_button" onclick="startGame()">continue</div>
+        <div class="option_button" onclick="openOptWindow()">options</div>
+        <div class="options" style="opacity: 0;"><div class="x" onclick="closeOptions()">x</div><input type="range" id="volume" min="0" max="100" value="${audio.volumeValue()}" oninput="ChangeVolume()"><p id="rangeValue">${audio.volumeValue()}</p></div>  
+    </div>`; 
     map = document.querySelector(".map");
     map.style.top = `${playerY}px`;
     map.style.left = `${playerX}px`;
     player = document.querySelector(".player");
-    setInterval(gameLoop, 10);
-    document.addEventListener('keydown', function(event) {
-    keysPressed[event.key] = true;
-    });
-
-    document.addEventListener('keyup', function(event) {
-    switch(lastButton){
-        case "w":
-            player.src = "img/player_back.png";
-            break;
-        case "a":
-            player.src = "img/player_left.png";
-            break;
-        case "s":
-            player.src = "img/player_front.png";
-            break;
-        case "d":
-            player.src = "img/player_right.png";
-            break;
-    }
-    delete keysPressed[event.key];
-    });   
+    clearInterval(gameLooping);
+    gameLooping = setInterval(gameLoop, 10); 
 }
 
 function gameLoop(){
@@ -127,4 +118,5 @@ function gameLoop(){
     //Sets the players new position
     map.style.top = `${playerY}px`;
     map.style.left = `${playerX}px`;
+
 }

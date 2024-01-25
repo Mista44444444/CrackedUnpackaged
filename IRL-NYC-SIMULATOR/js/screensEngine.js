@@ -1,4 +1,5 @@
 //Initializing varaibles
+let introWas = false;
 let start_menu = {
     code: `
     <div class="background" style="position: absolute; z-index: -1;"></div>
@@ -6,7 +7,8 @@ let start_menu = {
         <div class="title">Cracked</div>
         <div class="start_button" onclick="startGame()">start</div>
         <div class="option_button" onclick="openOptWindow()">options</div>
-        <div class="options" style="opacity: 0;"><div class="x" onclick="closeOptions()">x</div>something</div>  
+        <div class="exit" onclick="window.close()">exit</div>
+        <div class="options" style="opacity: 0;"><div class="x" onclick="closeOptions()">x</div><div class="volumeText">Volume</div><input type="range" id="volume" min="0" max="100" value="50" oninput="ChangeVolume()"><p id="rangeValue">50</p></div>  
     </div>
     `,
     name: `startMenu`
@@ -22,7 +24,13 @@ let intro_screen = {
 }
 let Mgame_screen = {
     code: `
-    <img src="img/player_front.png"class="player">
+    <img class="menuButton" src="img/menu1.png" onclick="openMenu()">
+    <div class="menu" style="opacity:0">
+    <div class="unPause" onclick="openMenu()">unpause</div>
+    <div class="exitMButton" onclick="ctrlScreen(start_menu)">exit to menu</div>
+    <div class="exitButton" onclick="window.close()">exit</div>
+    </div>
+    <img class="player" src="img/player_front.png">
     <img class="map" src="img/map.png" style="left: 0%;top: 0%;">
     `,
     name: `game`
@@ -30,16 +38,19 @@ let Mgame_screen = {
 
 //Function to change the screens
 function ctrlScreen(HTML){
+    if(introWas && HTML == intro_screen){
+        HTML = Mgame_screen;
+    }
     game.innerHTML = HTML.code;
     window.location.name = HTML.name
     if(HTML.name == "startMenu"){
-        startBuildingsAnimation();
+        startMenu();
     }
     if(HTML.name == "intro"){
         switchToIntroScreen();
     }
     if(HTML.name == "game"){
-        startGameEngine();     
+        startGameEngine();  
     }
 }
 ctrlScreen(start_menu);
@@ -60,5 +71,11 @@ function reinitiateLET(){
     }
     if(document.querySelector(".map")){
         map = document.querySelector(".map");
+    }
+    if(document.querySelector(".menu")){
+        menu = document.querySelector(".menu");
+    }
+    if(document.querySelector(".menuButton")){
+        menuButton = document.querySelector(".menuButton")
     }
 }
