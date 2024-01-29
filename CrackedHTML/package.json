@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "install": "npm install"
+    "install": "install dependencies"
   },
   "dependencies": {
     "update-electron-app": "^3.0.0"
