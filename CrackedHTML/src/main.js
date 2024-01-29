@@ -6,10 +6,14 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
         height: 600,
         width: 800,
-        icon: __dirname + `img/icon.png`
+        icon: __dirname + `img/icon.png`,
+        webPreferences:{
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
     })
   
-    mainWindow.loadFile('index.html')
+    mainWindow.loadFile('src/index.html')
     mainWindow.webContents.openDevTools()
     mainWindow.maximize()
 }

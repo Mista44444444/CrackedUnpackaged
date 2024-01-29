@@ -2,7 +2,7 @@
   "name": "Cracked",
   "version": "1.0.0",
   "description": "test",
-  "main": "main.js",
+  "main": "src/main.js",
   "author": "Richard Tsytsylin, Yung",
   "license": "MIT",
   "devDependencies": {
