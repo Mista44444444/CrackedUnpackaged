@@ -59,7 +59,7 @@ body{
     font-size: 3vw;
     font-family: Title Font;
 }
-.start_button, .option_button{
+.start_button, .option_button, .exit{
     cursor: pointer;
     font-size: 1vw;
 }
@@ -112,7 +112,7 @@ body{
 .menu {
     position: fixed;
     z-index: 2;
-    background: #ffffff;
+    background: #ffffffde;
     width: 20%;
     height: 60%;
     transition: 1s;

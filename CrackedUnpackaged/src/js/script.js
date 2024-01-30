@@ -1,3 +1,39 @@
+//Initializing varaibles
+
+//Bolean
+let bindsThrottle = true;
+let introWas = false;
+
+//Num
+let menuState = 0;
+let playerSpeedY = 1.25;
+let playerSpeedX = 1.25;
+let playerY = -116;
+let playerX = -90;
+let time = getRandomNumber(2501,7501);
+
+//Object
+let keysPressed = {};
+
+//Sctring
+let lastButton;
+
+//DOM elements
+let volume = document.querySelector("#volume");
+let game = document.querySelector(".game");
+let options = document.querySelector(".options");
+let bac = document.querySelector(".background");
+let menuButton = document.querySelector(".menuButton");
+let menu = document.querySelector(".menu");
+let map = document.querySelector(".map");
+let player = document.querySelector(".player");
+
+//Intervals
+let buildingsInterval;
+let gameLooping;
+let bindsLoop;
+let introTimeout;
+
 //Saving
 
 const fs = require('fs');
@@ -137,19 +173,9 @@ const audio = new Audio();
 //Starting menu
 
 
-//Initializing varaibles
-let time = getRandomNumber(2501,7501);
-let game = document.querySelector(".game");
-let options = document.querySelector(".options");
-let buildingsInterval;
-let bac;
-let introTimeout;
-let bindsLoop;
-let bindsThrottle = true;
-
 //Sets up the starting menu
 function startMenu(){
-    reinitiateLET();
+    reinitateDOM();
     menuState = false;
     audio.reset(0);
     audio.play(0);
@@ -157,16 +183,15 @@ function startMenu(){
         if(document.querySelector(".background")){
         time = getRandomNumber(2501,7501);
         bac = document.querySelector(".background");
-        let transition_time = time/1000;
         bac.innerHTML = "";
-        bac.innerHTML += `<img src="img/b${getRandomNumber(1,3)}.png" class="Building" style="animation: ${transition_time}s Skyskrapers ease-out;">`;
+        bac.innerHTML += `<img src="img/b${getRandomNumber(1,3)}.png" class="Building" style="animation: ${time/1000}s Skyskrapers ease-out;">`;
         }
     }, time);
 }
 
 //Opens options window
 function openOptWindow(){
-    reinitiateLET();
+    reinitateDOM();
     if(options.style.opacity == "1"){
         options.style.opacity = "0";
     }
@@ -177,7 +202,7 @@ function openOptWindow(){
 
 //Changes volume of all songs
 function ChangeVolume(){
-    let volume = document.querySelector("#volume");
+    reinitateDOM();
     audio.volumeAll(volume.value)
     document.querySelector("#rangeValue").innerHTML = volume.value;
 }
@@ -198,7 +223,7 @@ bindsLoop = setInterval(binds, 10);
 
 //Function to start the game
 function startGame(){
-    reinitiateLET();
+    reinitateDOM();
     audio.pause(0);
     audio.reset(0);
     if(!introWas){
@@ -245,12 +270,8 @@ document.addEventListener('keyup', function(event) {
 //In game-menu
 
 
-let menuButton = document.querySelector(".menuButton");
-let menu = document.querySelector(".menu");
-let menuState = 0;
-
 function openMenu(){
-    reinitiateLET();
+    reinitateDOM();
     if(menuState == 0){
         menu.style.opacity = 1;
         menu.style.display = "";
@@ -272,15 +293,7 @@ function openMenu(){
 
 
 //Initializing varaibles
-let playerSpeedY = 1.25;
-let playerSpeedX = 1.25;
-let playerY = -116;
-let playerX = -90;
-let keysPressed = {};
-let lastButton;
-let map;
-let player;
-let gameLooping;
+
 
 function startGameEngine(){
     clearTimeout(introTimeout);
@@ -292,6 +305,7 @@ function startGameEngine(){
         <div class="title">Cracked</div>
         <div class="start_button" onclick="script.startGame()">continue</div>
         <div class="option_button" onclick="script.openOptWindow()">options</div>
+        <div class="exitButton" onclick="window.close()">exit</div>
         <div class="options" style="opacity: 0;"><div class="x" onclick="script.openOptWindow()">x</div><input type="range" id="volume" min="0" max="100" value="${audio.volumeValue()}" oninput="script.ChangeVolume()"><p id="rangeValue">${audio.volumeValue()}</p></div>  
     </div>`; 
     map = document.querySelector(".map");
@@ -399,7 +413,6 @@ function gameLoop(){
 
 
 //Initializing varaibles
-let introWas = false;
 let start_menu = {
     code: `
     <div class="background" style="position: absolute; z-index: -1;"></div>
@@ -425,11 +438,12 @@ let intro_screen = {
 let Mgame_screen = {
     code: `
     <img class="menuButton" src="img/menu1.png" onclick="script.openMenu()">
-    <div class="menu" style="opacity:0">
+    <div class="menu" style="opacity:0; display:none;">
     <div class="unPause" onclick="script.openMenu()">unpause</div>
     <div class="exitMButton" onclick="script.ctrlScreen(script.start_menu)">exit to menu</div>
     <div class="exitButton" onclick="window.close()">exit</div>
     </div>
+    <div class="textBox" style="style="opacity:0 display="none""></div>
     <img class="player" src="img/player_front.png">
     <img class="map" src="img/map.png" style="left: 0%;top: 0%;">
     `,
@@ -456,7 +470,7 @@ function ctrlScreen(HTML){
 ctrlScreen(start_menu);
 
 //Reinitiates all dom varaibles
-function reinitiateLET(){
+function reinitateDOM(){
     if(document.querySelector(".game")){
         game = document.querySelector(".game");
     }
@@ -476,7 +490,10 @@ function reinitiateLET(){
         menu = document.querySelector(".menu");
     }
     if(document.querySelector(".menuButton")){
-        menuButton = document.querySelector(".menuButton")
+        menuButton = document.querySelector(".menuButton");
+    }
+    if(document.querySelector("#volume")){
+        volume = document.querySelector("#volume");
     }
 }
 
