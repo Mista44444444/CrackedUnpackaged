@@ -126,6 +126,23 @@ body{
 .exitMButton, .exitButton, .unPause{
     cursor: pointer;
 }
+.textBox {
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+    width: 70%;
+    height: 38%;
+    background: #ffffffcf;
+    border: black 5px solid;
+    padding: 1%;
+    font-size: 3vw;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: row;
+    overflow-wrap: break-word;
+    text-align: left;
+}
 .player {
     width: 100px;
     z-index: 1;

@@ -25,6 +25,7 @@ let options = document.querySelector(".options");
 let bac = document.querySelector(".background");
 let menuButton = document.querySelector(".menuButton");
 let menu = document.querySelector(".menu");
+let textBoxE = document.querySelector(".textBox");
 let map = document.querySelector(".map");
 let player = document.querySelector(".player");
 
@@ -42,7 +43,7 @@ const path = require('path');
 //Saving function
 function saveToFile(data) {
     const saveDirectory = path.join(__dirname, '../saves');
-    const saveFilePath = path.join(saveDirectory, 'save.txt');
+    const saveFilePath = path.join(saveDirectory, 'save.js');
   
     if (!fs.existsSync(saveDirectory)) {
       fs.mkdirSync(saveDirectory);
@@ -54,7 +55,7 @@ function saveToFile(data) {
 //Read from save.txt
 function readFromFile() {
     const saveDirectory = path.join(__dirname, '../saves');
-    const saveFilePath = path.join(saveDirectory, 'save.txt');
+    const saveFilePath = path.join(saveDirectory, 'save.js');
   
     if (!fs.existsSync(saveFilePath)) {
       return null;
@@ -175,7 +176,6 @@ const audio = new Audio();
 
 //Sets up the starting menu
 function startMenu(){
-    reinitateDOM();
     menuState = false;
     audio.reset(0);
     audio.play(0);
@@ -191,7 +191,6 @@ function startMenu(){
 
 //Opens options window
 function openOptWindow(){
-    reinitateDOM();
     if(options.style.opacity == "1"){
         options.style.opacity = "0";
     }
@@ -202,7 +201,6 @@ function openOptWindow(){
 
 //Changes volume of all songs
 function ChangeVolume(){
-    reinitateDOM();
     audio.volumeAll(volume.value)
     document.querySelector("#rangeValue").innerHTML = volume.value;
 }
@@ -223,7 +221,6 @@ bindsLoop = setInterval(binds, 10);
 
 //Function to start the game
 function startGame(){
-    reinitateDOM();
     audio.pause(0);
     audio.reset(0);
     if(!introWas){
@@ -271,7 +268,6 @@ document.addEventListener('keyup', function(event) {
 
 
 function openMenu(){
-    reinitateDOM();
     if(menuState == 0){
         menu.style.opacity = 1;
         menu.style.display = "";
@@ -408,6 +404,30 @@ function gameLoop(){
 
 }
 
+//Function to start a dialouge
+function textBox(text){
+    let textA = text.split("");
+    textBoxE.style.opacity = "1";
+    textBoxE.style.display = "";
+    textBoxE.innerHTML = "";
+    clearInterval(gameLooping);
+    for(let i = 0;i < textA.length;i++){
+        setTimeout(() => {
+            textBoxE.innerHTML += textA[i];
+        }, i * 50);
+    }
+    let handleEnter = window.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            window.removeEventListener("keydown", handleEnter);
+            clearInterval(gameLooping);
+            gameLooping = setInterval(gameLoop, 10); 
+            textBoxE.style.opacity = "0";
+            textBoxE.style.display = "none";
+        }
+      });
+      
+}
+
 
 //Screens engine
 
@@ -443,7 +463,7 @@ let Mgame_screen = {
     <div class="exitMButton" onclick="script.ctrlScreen(script.start_menu)">exit to menu</div>
     <div class="exitButton" onclick="window.close()">exit</div>
     </div>
-    <div class="textBox" style="style="opacity:0 display="none""></div>
+    <div class="textBox" style="opacity:0; display:none;"></div>
     <img class="player" src="img/player_front.png">
     <img class="map" src="img/map.png" style="left: 0%;top: 0%;">
     `,
@@ -466,6 +486,7 @@ function ctrlScreen(HTML){
     if(HTML.name == "game"){
         startGameEngine();  
     }
+    reinitateDOM();
 }
 ctrlScreen(start_menu);
 
@@ -495,6 +516,9 @@ function reinitateDOM(){
     if(document.querySelector("#volume")){
         volume = document.querySelector("#volume");
     }
+    if(textBoxE = document.querySelector(".textBox")){
+        textBoxE = document.querySelector(".textBox");
+    }
 }
 
 module.exports = {
@@ -505,6 +529,7 @@ module.exports = {
     openMenu: openMenu,
     saveToFile: saveToFile,
     readFromFile: readFromFile,
+    textBox: textBox,
     start_menu: start_menu,
     intro_screen: intro_screen,
     Mgame_screen: Mgame_screen
