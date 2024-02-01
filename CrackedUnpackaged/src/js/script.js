@@ -248,16 +248,16 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('keyup', function(event) {
     switch(lastButton){
         case "w":
-            player.src = "img/player_back.png";
+            player.src = "img/idleForeward.gif";
             break;
         case "a":
-            player.src = "img/player_left.png";
+            player.src = "img/idleLeft.gif";
             break;
         case "s":
-            player.src = "img/player_front.png";
+            player.src = "img/idleForward.gif";
             break;
         case "d":
-            player.src = "img/player_right.png";
+            player.src = "img/idleRight.gif";
             break;
     }
     delete keysPressed[event.key];
@@ -317,8 +317,8 @@ function gameLoop(){
     if (keysPressed['a'] && keysPressed['w']) {
         // Move the player diagonally up and left
         lastButton = "a";
-        if(player.src.includes("img/player")){
-            player.src = "img/leftside_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkLeft.gif";
         }
         playerX += playerSpeedX;
         playerY += playerSpeedY;
@@ -326,8 +326,8 @@ function gameLoop(){
     else if (keysPressed['a'] && keysPressed['s']) {
         // Move the player diagonally down and left
         lastButton = "a";
-        if(player.src.includes("img/player")){
-            player.src = "img/leftside_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkLeft.gif";
         }
         playerX += playerSpeedX;
         playerY -= playerSpeedY;
@@ -335,8 +335,8 @@ function gameLoop(){
     else if (keysPressed['d'] && keysPressed['w']) {
         // Move the player diagonally up and right
         lastButton = "d";
-        if(player.src.includes("img/player")){
-            player.src = "img/rightside_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkRight.gif";
         }
         playerX -= playerSpeedX;
         playerY += playerSpeedY;
@@ -344,8 +344,8 @@ function gameLoop(){
     else if (keysPressed['d'] && keysPressed['s']) {
         // Move the player diagonally down and right
         lastButton = "d";
-        if(player.src.includes("img/player")){
-            player.src = "img/rightside_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkRight.gif";
         }
         playerX -= playerSpeedX;
         playerY -= playerSpeedY;
@@ -353,49 +353,49 @@ function gameLoop(){
     else if (keysPressed['a']) {
         // Move the player left
         lastButton = "a";
-        if(player.src.includes("img/player")){
-            player.src = "img/leftside_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkLeft.gif";
         }
         playerX += playerSpeedX;
     } 
     else if (keysPressed['w']) {
         // Move the player up
         lastButton = "w";
-        if(player.src.includes("img/player")){
-            player.src = "img/backward_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkForewards.gif";
         }
         playerY += playerSpeedY;
     } 
     else if (keysPressed['s']) {
         // Move the player down
         lastButton = "s";
-        if(player.src.includes("img/player")){
-            player.src = "img/forward_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkForward.gif";
         }
         playerY -= playerSpeedY;
     } 
     else if (keysPressed['d']) {
         // Move the player right
         lastButton = "d";
-        if(player.src.includes("img/player")){
-            player.src = "img/rightside_walking.gif";
+        if(player.src.includes("img/idle")){
+            player.src = "img/walkRight.gif";
         }
         playerX -= playerSpeedX;
     }
 
     //Borders
-    if (playerX > 818) {
-        playerX = 818;
+    if (playerX > 810) {
+        playerX = 810;
     } 
-    else if (playerX < -817.5) {
-        playerX = -817.5;
+    else if (playerX < -812.5) {
+        playerX = -812.5;
     }
 
-    if (playerY > 393.5) {
-        playerY = 393.5;
+    if (playerY > 401.5) {
+        playerY = 401.5;
     } 
-    else if (playerY < -391) {
-        playerY = -391;
+    else if (playerY < -407.25) {
+        playerY = -407.25;
     }
 
     //Sets the players new position
@@ -464,7 +464,7 @@ let Mgame_screen = {
     <div class="exitButton" onclick="window.close()">exit</div>
     </div>
     <div class="textBox" style="opacity:0; display:none;"></div>
-    <img class="player" src="img/player_front.png">
+    <img class="player" src="img/idleForward.gif">
     <img class="map" src="img/map.png" style="left: 0%;top: 0%;">
     `,
     name: `game`
@@ -532,5 +532,5 @@ module.exports = {
     textBox: textBox,
     start_menu: start_menu,
     intro_screen: intro_screen,
-    Mgame_screen: Mgame_screen
+    Mgame_screen: Mgame_screen,
 }

@@ -144,7 +144,7 @@ body{
     text-align: left;
 }
 .player {
-    width: 100px;
+    width: 125px;
     z-index: 1;
     position: fixed;
 }
