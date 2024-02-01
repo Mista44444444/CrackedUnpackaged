@@ -10,7 +10,6 @@ let playerSpeedY = 1.25;
 let playerSpeedX = 1.25;
 let playerY = -116;
 let playerX = -90;
-let time = getRandomNumber(2501,7501);
 
 //Object
 let keysPressed = {};
@@ -22,15 +21,16 @@ let lastButton;
 let volume = document.querySelector("#volume");
 let game = document.querySelector(".game");
 let options = document.querySelector(".options");
-let bac = document.querySelector(".background");
+let background = document.querySelector(".background");
 let menuButton = document.querySelector(".menuButton");
 let menu = document.querySelector(".menu");
 let textBoxE = document.querySelector(".textBox");
 let map = document.querySelector(".map");
 let player = document.querySelector(".player");
+let panorama = document.querySelector(".panorama");
 
 //Intervals
-let buildingsInterval;
+let panoramaInterval;
 let gameLooping;
 let bindsLoop;
 let introTimeout;
@@ -179,14 +179,6 @@ function startMenu(){
     menuState = false;
     audio.reset(0);
     audio.play(0);
-    buildingsInterval = setInterval(() => {
-        if(document.querySelector(".background")){
-        time = getRandomNumber(2501,7501);
-        bac = document.querySelector(".background");
-        bac.innerHTML = "";
-        bac.innerHTML += `<img src="img/b${getRandomNumber(1,3)}.png" class="Building" style="animation: ${time/1000}s Skyskrapers ease-out;">`;
-        }
-    }, time);
 }
 
 //Opens options window
@@ -232,7 +224,7 @@ function startGame(){
 
 //Switches to intro screen
 function switchToIntroScreen(){
-    clearInterval(buildingsInterval);
+    clearInterval(panoramaInterval);
     introWas = true;
     game.style.display = "";
     game.style.opacity = "1";
@@ -293,10 +285,11 @@ function openMenu(){
 
 function startGameEngine(){
     clearTimeout(introTimeout);
-    clearInterval(buildingsInterval);
+    clearInterval(panoramaInterval);
     menuState = 0;  
     start_menu.code = `
-    <div class="background" style="position: absolute; z-index: -1;"></div>
+    <div class="background" style="position: absolute; z-index: -1;">
+    </div>
     <div class="on_top_of_background">
         <div class="title">Cracked</div>
         <div class="start_button" onclick="script.startGame()">continue</div>
@@ -384,18 +377,18 @@ function gameLoop(){
     }
 
     //Borders
-    if (playerX > 810) {
-        playerX = 810;
+    if (playerX > 992.5) {
+        playerX = 992.5;
     } 
-    else if (playerX < -812.5) {
-        playerX = -812.5;
+    else if (playerX < -876.25) {
+        playerX = -876.5;
     }
 
-    if (playerY > 401.5) {
-        playerY = 401.5;
+    if (playerY > 1090.25) {
+        playerY = 1090.25;
     } 
-    else if (playerY < -407.25) {
-        playerY = -407.25;
+    else if (playerY < -1127.25) {
+        playerY = -1127.25;
     }
 
     //Sets the players new position
@@ -435,7 +428,8 @@ function textBox(text){
 //Initializing varaibles
 let start_menu = {
     code: `
-    <div class="background" style="position: absolute; z-index: -1;"></div>
+    <div class="background" style="position: absolute; z-index: -1;">
+    </div>
     <div class="on_top_of_background">
         <div class="title">Cracked</div>
         <div class="start_button" onclick="script.startGame()">start</div>
@@ -496,7 +490,7 @@ function reinitateDOM(){
         game = document.querySelector(".game");
     }
     if(document.querySelector(".background")){
-        bac = document.querySelector(".background");
+        background = document.querySelector(".background");
     }
     if(document.querySelector(".options")){
         options = document.querySelector(".options");

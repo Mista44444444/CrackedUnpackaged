@@ -33,19 +33,16 @@ body{
 .background{
     width: 100%;
     height: 100%;
-    background: #90e7ff;
-    position: absolute;
-    z-index: -1;
+    background: #b6fcff;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
     flex-direction: row;
-}
-.Building {
-    width: 15%;
-    position: absolute;
-    bottom: 0;
-    left: -15%;
+    flex-wrap: nowrap;
+    background-image: url('../img/panorama.png');
+    background-repeat: repeat-x;
+    background-size: 99%;
+    animation: Panorama 10s linear infinite;
 }
 .on_top_of_background {
     display: flex;
@@ -150,15 +147,14 @@ body{
 }
 .map {
     position: relative;
-    width: 1743px;
-    height: 1000px;
+    width: 3526px;
     border: black 4px solid;
 }
-@keyframes Skyskrapers {
-    0%{
-        left: -20%;
-    }
-    100%{
-        left: 100%;
-    }
+@keyframes Panorama {
+    from {
+        background-position: 0 bottom;
+      }
+      to {
+        background-position: 99vw bottom;
+      }
 }
