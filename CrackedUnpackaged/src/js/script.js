@@ -8,11 +8,13 @@ let introWas = false;
 let menuState = 0;
 let playerSpeedY = 1.25;
 let playerSpeedX = 1.25;
-let playerY = -116;
-let playerX = -90;
+let playerY = 0;
+let playerX = 0;
 
 //Object
 let keysPressed = {};
+let sides = [];
+let lastSide = false;
 
 //Sctring
 let lastButton;
@@ -28,6 +30,7 @@ let textBoxE = document.querySelector(".textBox");
 let map = document.querySelector(".map");
 let player = document.querySelector(".player");
 let panorama = document.querySelector(".panorama");
+let hitboxes = document.querySelectorAll(".hitbox");
 
 //Intervals
 let panoramaInterval;
@@ -89,6 +92,33 @@ function isNumeric(str) {
     return /^\d+$/.test(str);
 }
 
+//Checks if elements are colliding
+function areElementsColliding(element1, element2) {
+    const rect1 = element1.getBoundingClientRect();
+    const rect2 = element2.getBoundingClientRect();
+
+    // Check for collision using bounding rectangles
+    return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+    );
+}
+
+//fades an element
+function Fade(element1, element2) {
+    element2.forEach(element => {
+        if(areElementsColliding(element1,element)){
+            element.style.background = element.getAttribute("color");
+            element.style.borderBottom = "26px solid black";
+        }
+        else{
+            element.style.background = "";
+            element.style.borderBottom = "";
+        }
+    });
+}
 
 //Music controller
 
@@ -242,12 +272,16 @@ document.addEventListener('keyup', function(event) {
         case "w":
             player.src = "img/idleForeward.gif";
             break;
+        case "aw":
+        case "as":
         case "a":
             player.src = "img/idleLeft.gif";
             break;
         case "s":
             player.src = "img/idleForward.gif";
             break;
+        case "dw":
+        case "ds":
         case "d":
             player.src = "img/idleRight.gif";
             break;
@@ -309,7 +343,7 @@ function gameLoop(){
     //Movement
     if (keysPressed['a'] && keysPressed['w']) {
         // Move the player diagonally up and left
-        lastButton = "a";
+        lastButton = "aw";
         if(player.src.includes("img/idle")){
             player.src = "img/walkLeft.gif";
         }
@@ -318,7 +352,7 @@ function gameLoop(){
     } 
     else if (keysPressed['a'] && keysPressed['s']) {
         // Move the player diagonally down and left
-        lastButton = "a";
+        lastButton = "as";
         if(player.src.includes("img/idle")){
             player.src = "img/walkLeft.gif";
         }
@@ -327,7 +361,7 @@ function gameLoop(){
     } 
     else if (keysPressed['d'] && keysPressed['w']) {
         // Move the player diagonally up and right
-        lastButton = "d";
+        lastButton = "dw";
         if(player.src.includes("img/idle")){
             player.src = "img/walkRight.gif";
         }
@@ -336,7 +370,7 @@ function gameLoop(){
     } 
     else if (keysPressed['d'] && keysPressed['s']) {
         // Move the player diagonally down and right
-        lastButton = "d";
+        lastButton = "ds";
         if(player.src.includes("img/idle")){
             player.src = "img/walkRight.gif";
         }
@@ -390,11 +424,12 @@ function gameLoop(){
     else if (playerY < -1127.25) {
         playerY = -1127.25;
     }
+    getLastSide(player,hitboxes)
+    Fade(player,document.querySelectorAll(".fade"))
 
     //Sets the players new position
     map.style.top = `${playerY}px`;
     map.style.left = `${playerX}px`;
-
 }
 
 //Function to start a dialouge
@@ -420,6 +455,85 @@ function textBox(text){
       });
       
 }
+
+// Gets last side which is touched by element1
+function getLastSide(element1, element2Array) {
+    const rect1 = element1.getBoundingClientRect();
+    for(let i = 0;element2Array.length > i;i++){
+        const rect2 = element2Array[i].getBoundingClientRect();
+        if(sides[i] == undefined){
+        sides[i] = [];
+        }
+
+        if (rect1.left < rect2.right) {
+            if (!sides[i].includes("left")) {
+                sides[i].push("left");
+            }
+        } else {
+            if (sides[i].includes("left")) {
+                sides[i].splice(sides[i].indexOf("left"), 1);
+            }
+        }
+
+        if (rect1.top < rect2.bottom) {
+            if (!sides[i].includes("top")) {
+                sides[i].push("top");
+            }
+        } else {
+            if (sides[i].includes("top")) {
+                sides[i].splice(sides[i].indexOf("top"), 1);
+            }
+        }
+
+        if (rect1.right > rect2.left) {
+            if (!sides[i].includes("right")) {
+                sides[i].push("right");
+            }
+        } else {
+            if (sides[i].includes("right")) {
+                sides[i].splice(sides[i].indexOf("right"), 1);
+            }
+        }
+
+        if (rect1.bottom > rect2.top) {
+            if (!sides[i].includes("bottom")) {
+                sides[i].push("bottom");
+            }
+        } else {
+            if (sides[i].includes("bottom")) {
+                sides[i].splice(sides[i].indexOf("bottom"), 1);
+            }
+        }
+    }
+    let validSet = false;
+    let setIndex;
+    sides.forEach((array, index) => {
+        if(array.length == 4){
+            validSet = true;
+            setIndex = index;
+        }
+    });
+    if(validSet){
+        switch (sides[setIndex][3]) {
+            case "top":
+                playerY -= playerSpeedY;
+                break;
+            case "bottom":
+                playerY += playerSpeedY;
+                break;
+            case "right":
+                playerX += playerSpeedX;
+                break;
+            case "left":
+                playerX -= playerSpeedX;
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
 
 
 //Screens engine
@@ -459,7 +573,15 @@ let Mgame_screen = {
     </div>
     <div class="textBox" style="opacity:0; display:none;"></div>
     <img class="player" src="img/idleForward.gif">
-    <img class="map" src="img/map.png" style="left: 0%;top: 0%;">
+    <div class="map">
+    <img class="map_img" src="img/map.png">
+    <div class="hitbox" style="position: absolute;top: 1376px;left: 744px;width: 514px;height: 778px;"></div>
+    <div class="hitbox" style="position: absolute;top: 1886px;left: 2109px;width: 557px;height: 299px;"></div>
+    <div class="hitbox" style="position: absolute;top: 1272px;left: 2109px;width: 557px;height: 295px;"></div>
+    <div class="fade" color="#443f47" style="position: absolute;top: 1753px;left: 2073px;width: 593.5px;height: 154px;"></div>
+    <div class="fade" color="#626262" style="position: absolute; top: 1136px; left: 2086px; width: 580.5px; height: 154px;"></div>
+    <div class="fade" color="#626262" style="position: absolute;top: 1222px;left: 741px;width: 542.5px;height: 177px;"></div>
+    </div>
     `,
     name: `game`
 }
@@ -510,8 +632,11 @@ function reinitateDOM(){
     if(document.querySelector("#volume")){
         volume = document.querySelector("#volume");
     }
-    if(textBoxE = document.querySelector(".textBox")){
+    if(document.querySelector(".textBox")){
         textBoxE = document.querySelector(".textBox");
+    }
+    if(document.querySelectorAll(".hitbox")){
+        hitboxes = document.querySelectorAll(".hitbox");
     }
 }
 
@@ -524,7 +649,10 @@ module.exports = {
     saveToFile: saveToFile,
     readFromFile: readFromFile,
     textBox: textBox,
+    areElementsColliding: areElementsColliding,
     start_menu: start_menu,
     intro_screen: intro_screen,
     Mgame_screen: Mgame_screen,
+    playerX: playerX,
+    playerY: playerY
 }
