@@ -1,8 +1,11 @@
 //Initializing varaibles
 
-//Bolean
+//Export
+let Saves = require("../saves/save.js");
+
+//Boolean
 let bindsThrottle = true;
-let introWas = false;
+let introWas = Saves.introWas;
 
 //Num
 let menuState = 0;
@@ -10,13 +13,15 @@ let playerSpeedY = 1.25;
 let playerSpeedX = 1.25;
 let playerY = 0;
 let playerX = 0;
+let canEnterBuilding = 0;
 
 //Object
 let keysPressed = {};
-let sides = [];
-let lastSide = false;
 
-//Sctring
+//Array
+let sides = [];
+
+//String
 let lastButton;
 
 //DOM elements
@@ -25,12 +30,15 @@ let game = document.querySelector(".game");
 let options = document.querySelector(".options");
 let background = document.querySelector(".background");
 let menuButton = document.querySelector(".menuButton");
+let enterButton = document.querySelector(".enterButton");
 let menu = document.querySelector(".menu");
 let textBoxE = document.querySelector(".textBox");
 let map = document.querySelector(".map");
 let player = document.querySelector(".player");
 let panorama = document.querySelector(".panorama");
 let hitboxes = document.querySelectorAll(".hitbox");
+let fadeElem = document.querySelectorAll(".fade")
+let entrances = document.querySelectorAll(".entrance");
 
 //Intervals
 let panoramaInterval;
@@ -107,7 +115,7 @@ function areElementsColliding(element1, element2) {
 }
 
 //fades an element
-function Fade(element1, element2) {
+function fade(element1, element2) {
     element2.forEach(element => {
         if(areElementsColliding(element1,element)){
             element.style.background = element.getAttribute("color");
@@ -118,6 +126,24 @@ function Fade(element1, element2) {
             element.style.borderBottom = "";
         }
     });
+}
+
+//Function to enter a building
+function enterBuilding(element1, element2){
+    let reset = 0;
+    for(let i = 0;i < element2.length;i++){
+        if(areElementsColliding(player,element2[i])){
+            canEnterBuilding = parseFloat(element2[i].id)+1;
+            enterButton.style.opacity = "1";
+        }
+        else{
+            reset++;
+        }
+    }
+    if(reset == element2.length){
+        canEnterBuilding = 0;
+        enterButton.style.opacity = "0";
+    }
 }
 
 //Music controller
@@ -236,6 +262,11 @@ function binds(){
                 bindsThrottle = true;
             },200);
         }
+        if(keysPressed['Enter']){
+            if(canEnterBuilding > 0){
+                console.log("enter "+canEnterBuilding);
+            }
+        }
     }
 }
 
@@ -256,6 +287,12 @@ function startGame(){
 function switchToIntroScreen(){
     clearInterval(panoramaInterval);
     introWas = true;
+    saveToFile(`
+    let introWas = true
+    module.exports = {
+        introWas: introWas,
+    }
+    `);
     game.style.display = "";
     game.style.opacity = "1";
     introTimeout = setTimeout(() => {
@@ -297,14 +334,14 @@ function openMenu(){
     if(menuState == 0){
         menu.style.opacity = 1;
         menu.style.display = "";
-        menuButton.src = "img/menu2.png";
+        menuButton.style.rotate = "90deg";
         clearInterval(gameLooping);
         menuState = 1;
     }
     else if(menuState == 1){
         menu.style.opacity = 0;
         menu.style.display = "none";
-        menuButton.src = "img/menu1.png";
+        menuButton.style.rotate = "";
         gameLooping = setInterval(gameLoop, 10);
         menuState = 0;
     }
@@ -424,8 +461,9 @@ function gameLoop(){
     else if (playerY < -1127.25) {
         playerY = -1127.25;
     }
-    getLastSide(player,hitboxes)
-    Fade(player,document.querySelectorAll(".fade"))
+    getLastSide(player,hitboxes);
+    enterBuilding(player,entrances);
+    fade(player,fadeElem)
 
     //Sets the players new position
     map.style.top = `${playerY}px`;
@@ -566,6 +604,7 @@ let intro_screen = {
 let Mgame_screen = {
     code: `
     <img class="menuButton" src="img/menu1.png" onclick="script.openMenu()">
+    <img class="enterButton" src="img/enter.png" style="opacity:0">
     <div class="menu" style="opacity:0; display:none;">
     <div class="unPause" onclick="script.openMenu()">unpause</div>
     <div class="exitMButton" onclick="script.ctrlScreen(script.start_menu)">exit to menu</div>
@@ -581,6 +620,8 @@ let Mgame_screen = {
     <div class="fade" color="#443f47" style="position: absolute;top: 1753px;left: 2073px;width: 593.5px;height: 154px;"></div>
     <div class="fade" color="#626262" style="position: absolute; top: 1136px; left: 2086px; width: 580.5px; height: 154px;"></div>
     <div class="fade" color="#626262" style="position: absolute;top: 1222px;left: 741px;width: 542.5px;height: 177px;"></div>
+    <img class="entrance" src="img/entrance.gif" id="0" style="position: absolute;top: 2113px;width: 42px;left: 2030px;">
+    <img class="entrance" src="img/entrance.gif" id="1" style="position: absolute;top: 1822px;width: 42px;left: 1297px;rotate: 180deg;">
     </div>
     `,
     name: `game`
@@ -629,6 +670,9 @@ function reinitateDOM(){
     if(document.querySelector(".menuButton")){
         menuButton = document.querySelector(".menuButton");
     }
+    if(document.querySelector(".enterButton")){
+        enterButton = document.querySelector(".enterButton");
+    }
     if(document.querySelector("#volume")){
         volume = document.querySelector("#volume");
     }
@@ -637,6 +681,12 @@ function reinitateDOM(){
     }
     if(document.querySelectorAll(".hitbox")){
         hitboxes = document.querySelectorAll(".hitbox");
+    }
+    if(document.querySelectorAll(".fade")){
+        fadeElem = document.querySelectorAll(".fade")
+    }
+    if(document.querySelectorAll(".entrance")){
+        entrances = document.querySelectorAll(".entrance")
     }
 }
 

@@ -1,12 +1,18 @@
 @font-face {
-    font-family: "Title Font";
-    src: url("../fonts/Title_Font.ttf");
+    font-family: "Pixel Font Bold";
+    src: url("../fonts/Pixel_font_bold.ttf");
+}
+@font-face {
+    font-family: "Pixel Font";
+    src: url("../fonts/Pixel_font.ttf");
 }
 *{
     box-sizing: border-box;
     user-select: none;
     text-align: center;
     -webkit-user-drag: none;
+    font-family: Pixel Font;
+    font-size: 1vw;
 }
 html{
     height: 100%;
@@ -54,17 +60,19 @@ body{
 .title {
     margin: 0 0 18% 0;
     font-size: 3vw;
-    font-family: Title Font;
+    font-family: Pixel Font Bold;
 }
 .start_button, .option_button, .exit{
     cursor: pointer;
     font-size: 1vw;
+    font-family: Pixel Font;
+    margin-bottom: 3%;
 }
 .options{
     width: 17%;
     display: flex;
     height: 32%;
-    border: black 1px solid;
+    border: black 0.2vw solid;
     position: absolute;
     right: 20%;
     top: 20%;
@@ -74,6 +82,12 @@ body{
     flex-direction: column;
     font-size: 1.5vw;
 }
+.volumeText {
+    margin-bottom: 2%;
+}
+#rangeValue {
+    margin: 0;
+}
 .x{
     cursor: pointer;
     position: relative;
@@ -81,6 +95,21 @@ body{
     font-size: 2vw;
 }
 #volume{
+    cursor: pointer;
+    -webkit-appearance: none;
+    width: 50%;
+    height: 24.24px;
+    background: transparent;
+    border-radius: 0;
+    border: 1px solid black;
+}
+#volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24.24px;
+    height: 24.24px;
+    background: black;
+    border-radius: 0;
     cursor: pointer;
 }
 .skip{
@@ -105,6 +134,15 @@ body{
     width: 2%;
     z-index: 1;
     cursor: pointer;
+    transition: 1s;
+}
+.enterButton {
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    width: 3vw;
+    z-index: 1;
+    transition: 1s;
 }
 .menu {
     position: fixed;
@@ -113,8 +151,7 @@ body{
     width: 20%;
     height: 60%;
     transition: 1s;
-    border: blue 4px solid;
-    border-radius: 30px;
+    border: black 4px solid;
     display: flex;
     align-items: center;
     justify-content: space-evenly;

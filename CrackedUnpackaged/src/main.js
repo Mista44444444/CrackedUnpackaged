@@ -7,6 +7,7 @@ const createWindow = () => {
         height: 600,
         width: 800,
         icon: __dirname + `img/icon.png`,
+        fullscreen: true,
         webPreferences:{
             nodeIntegration: true,
             contextIsolation: false,
