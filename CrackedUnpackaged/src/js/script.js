@@ -650,7 +650,7 @@ let intro_screen = {
 }
 let Mgame_screen = {
     code: `
-    <img class="menuButton" src="img/menu1.png" onclick="script.openMenu()">
+    <img class="menuButton" src="img/menu.png" onclick="script.openMenu()">
     <img class="enterButton" src="img/enter.png" style="opacity:0">
     <div class="menu" style="opacity:0; display:none;">
     <div class="unPause" onclick="script.openMenu()">unpause</div>
@@ -675,7 +675,7 @@ let Mgame_screen = {
 }
 let Buildings = {
     Building2: {
-        code: `<img class="menuButton" src="img/menu1.png" onclick="script.openMenu()">
+        code: `<img class="menuButton" src="img/menu.png" onclick="script.openMenu()">
     <img class="enterButton" src="img/enter.png" style="opacity:0">
     <div class="menu" style="opacity:0; display:none;">
     <div class="unPause" onclick="script.openMenu()">unpause</div>
@@ -697,7 +697,7 @@ let Buildings = {
     name: `building2`
     },
     Building3: {
-        code: `<img class="menuButton" src="img/menu1.png" onclick="script.openMenu()">
+        code: `<img class="menuButton" src="img/menu.png" onclick="script.openMenu()">
     <img class="enterButton" src="img/enter.png" style="opacity:0">
     <div class="menu" style="opacity:0; display:none;">
     <div class="unPause" onclick="script.openMenu()">unpause</div>
