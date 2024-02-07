@@ -187,8 +187,6 @@ body{
 }
 .map {
     position: relative;
-    width: 3526px;
-    border: black 4px solid;
 }
 .map_img{
     width: 100%;

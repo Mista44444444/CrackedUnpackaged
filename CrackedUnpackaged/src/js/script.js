@@ -6,6 +6,7 @@ let Saves = require("../saves/save.js");
 //Boolean
 let bindsThrottle = true;
 let introWas = Saves.introWas;
+let continuing = false;
 
 //Num
 let menuState = 0;
@@ -13,6 +14,8 @@ let playerSpeedY = 1.25;
 let playerSpeedX = 1.25;
 let playerY = 0;
 let playerX = 0;
+let mapPlayerX = 0;
+let mapPlayerY = 0;
 let canEnterBuilding = 0;
 
 //Object
@@ -23,6 +26,19 @@ let sides = [];
 
 //String
 let lastButton;
+let lastScreen;
+if(introWas){
+    setTimeout(() => {
+        lastScreen = Mgame_screen;
+    }, 10);
+}
+if(!introWas){
+    setTimeout(() => {
+    lastScreen = intro_screen;
+    }, 10);
+}
+let lastPlayerGif = "img/idleForward.gif"
+
 
 //DOM elements
 let volume = document.querySelector("#volume");
@@ -264,7 +280,16 @@ function binds(){
         }
         if(keysPressed['Enter']){
             if(canEnterBuilding > 0){
-                console.log("enter "+canEnterBuilding);
+                if(canEnterBuilding == 1){
+                    ctrlScreen(Mgame_screen);
+                }
+                else{
+                    ctrlScreen(Buildings[`Building${canEnterBuilding}`]);
+                }
+                bindsThrottle = false;
+                setTimeout(() => {
+                    bindsThrottle = true;
+                },200);
             }
         }
     }
@@ -280,7 +305,7 @@ function startGame(){
     game.style.display = "none";
     game.style.opacity = "0";
     }
-    ctrlScreen(intro_screen);
+    ctrlScreen(lastScreen);
 }
 
 //Switches to intro screen
@@ -369,10 +394,19 @@ function startGameEngine(){
         <div class="options" style="opacity: 0;"><div class="x" onclick="script.openOptWindow()">x</div><input type="range" id="volume" min="0" max="100" value="${audio.volumeValue()}" oninput="script.ChangeVolume()"><p id="rangeValue">${audio.volumeValue()}</p></div>  
     </div>`; 
     map = document.querySelector(".map");
-    map.style.top = `${playerY}px`;
-    map.style.left = `${playerX}px`;
     player = document.querySelector(".player");
+    if(!continuing){
+    map.style.top = `${mapPlayerY}px`;
+    map.style.left = `${mapPlayerX}px`;
+    playerX = mapPlayerX;
+    playerY = mapPlayerY;
+    }
+    else{
+        map.style.top = `${playerY}px`;
+        map.style.left = `${playerX}px`;
+    }
     clearInterval(gameLooping);
+    player.src = lastPlayerGif;
     gameLooping = setInterval(gameLoop, 10); 
 }
 
@@ -446,20 +480,33 @@ function gameLoop(){
         }
         playerX -= playerSpeedX;
     }
+    lastPlayerGif = player.src
 
     //Borders
-    if (playerX > 992.5) {
-        playerX = 992.5;
-    } 
-    else if (playerX < -876.25) {
-        playerX = -876.5;
+    if(lastScreen.name == Mgame_screen.name){
+        if (playerX > 992.5) {
+            playerX = 992.5;
+        } 
+        if (playerX < -876.25) {
+            playerX = -876.5;
+        }
+        if (playerY > 1090.25) {
+            playerY = 1090.25;
+        } 
+        if (playerY < -1127.25) {
+            playerY = -1127.25;
     }
-
-    if (playerY > 1090.25) {
-        playerY = 1090.25;
-    } 
-    else if (playerY < -1127.25) {
-        playerY = -1127.25;
+    }
+    if(lastScreen.name == Buildings[`Building3`].name){
+        if (playerX > 202.5) {
+            playerX = 202.5;
+        } 
+        if (playerX < -202.5) {
+            playerX = -202.5;
+        }
+        if (playerY < -525) {
+            playerY = -525;
+        }
     }
     getLastSide(player,hitboxes);
     enterBuilding(player,entrances);
@@ -611,37 +658,99 @@ let Mgame_screen = {
     <div class="exitButton" onclick="window.close()">exit</div>
     </div>
     <div class="textBox" style="opacity:0; display:none;"></div>
-    <img class="player" src="img/idleForward.gif">
-    <div class="map">
+    <img class="player" src="${lastPlayerGif}">
+    <div class="map" style="width: 3526px;">
     <img class="map_img" src="img/map.png">
     <div class="hitbox" style="position: absolute;top: 1376px;left: 744px;width: 514px;height: 778px;"></div>
     <div class="hitbox" style="position: absolute;top: 1886px;left: 2109px;width: 557px;height: 299px;"></div>
     <div class="hitbox" style="position: absolute;top: 1272px;left: 2109px;width: 557px;height: 295px;"></div>
-    <div class="fade" color="#443f47" style="position: absolute;top: 1753px;left: 2073px;width: 593.5px;height: 154px;"></div>
-    <div class="fade" color="#626262" style="position: absolute; top: 1136px; left: 2086px; width: 580.5px; height: 154px;"></div>
-    <div class="fade" color="#626262" style="position: absolute;top: 1222px;left: 741px;width: 542.5px;height: 177px;"></div>
-    <img class="entrance" src="img/entrance.gif" id="0" style="position: absolute;top: 2113px;width: 42px;left: 2030px;">
-    <img class="entrance" src="img/entrance.gif" id="1" style="position: absolute;top: 1822px;width: 42px;left: 1297px;rotate: 180deg;">
+    <div class="fade" color="#443f47" style="position: absolute;top: 1753px; left: 2078px;width: 596px;height: 154px;"></div>
+    <div class="fade" color="#626262" style="position: absolute; top: 1136px; left: 2091px;width: 582px; height: 154px;"></div>
+    <div class="fade" color="#626262" style="position: absolute;top: 1222px; left: 743px;width: 544px;height: 177px;"></div>
+    <img class="entrance" src="img/entrance.gif" id="1" style="position: absolute;top: 2113px;width: 42px;left: 2035px;">
+    <img class="entrance" src="img/entrance.gif" id="2" style="position: absolute;top: 1822px;width: 42px;left: 1300px;rotate: 180deg;">
     </div>
     `,
     name: `game`
 }
+let Buildings = {
+    Building2: {
+        code: `<img class="menuButton" src="img/menu1.png" onclick="script.openMenu()">
+    <img class="enterButton" src="img/enter.png" style="opacity:0">
+    <div class="menu" style="opacity:0; display:none;">
+    <div class="unPause" onclick="script.openMenu()">unpause</div>
+    <div class="exitMButton" onclick="script.ctrlScreen(script.start_menu)">exit to menu</div>
+    <div class="exitButton" onclick="window.close()">exit</div>
+    </div>
+    <div class="textBox" style="opacity:0; display:none;"></div>
+    <img class="player" src="${lastPlayerGif}">
+    <div class="map" style="width: 3526px;">
+    <img class="map_img" src="img/Building2.png">
+    <div class="hitbox" style="position: absolute;top: 1376px;left: 744px;width: 514px;height: 778px;"></div>
+    <div class="hitbox" style="position: absolute;top: 1886px;left: 2109px;width: 557px;height: 299px;"></div>
+    <div class="hitbox" style="position: absolute;top: 1272px;left: 2109px;width: 557px;height: 295px;"></div>
+    <div class="hitbox" style="position: absolute;top: 1272px;left: 2109px;width: 557px;height: 295px;"></div>
+    <div class="hitbox" style="position: absolute;top: 1272px;left: 2109px;width: 557px;height: 295px;"></div>
+    <div class="entrance" id="0" style="position: absolute;top: 2113px;width: 42px;left: 2030px;"></div>
+    </div>
+    `,
+    name: `building2`
+    },
+    Building3: {
+        code: `<img class="menuButton" src="img/menu1.png" onclick="script.openMenu()">
+    <img class="enterButton" src="img/enter.png" style="opacity:0">
+    <div class="menu" style="opacity:0; display:none;">
+    <div class="unPause" onclick="script.openMenu()">unpause</div>
+    <div class="exitMButton" onclick="script.ctrlScreen(script.start_menu)">exit to menu</div>
+    <div class="exitButton" onclick="window.close()">exit</div>
+    </div>
+    <div class="textBox" style="opacity:0; display:none;"></div>
+    <img class="player" src="${lastPlayerGif}">
+    <div class="map" style="width: 500px;">
+    <img class="map_img" src="img/Building3.png">
+    <div class="hitbox" style="position: absolute;top: 15px;left: 15px;width: 470px;height: 75px;"></div>
+    <div class="hitbox" style="position: absolute;top: 394px;left: 462px;width: 23px;height: 1px;"></div>
+    <div class="hitbox" style="position: absolute;top: 479px;left: 15px;width: 23px;height: 1px;"></div>
+    <div class="hitbox" style="position: absolute;top: 819px;left: 15px;width: 23px;height: 1px;"></div>
+    <div class="entrance" id="0" style="position: absolute;top: 904px;left: 429px;width: 57px;height: 125px;"></div>
+    </div>
+    `,
+    name: `building3`
+    },
+}
 
 //Function to change the screens
 function ctrlScreen(HTML){
-    if(introWas && HTML == intro_screen){
-        HTML = Mgame_screen;
-    }
     game.innerHTML = HTML.code;
-    window.location.name = HTML.name
+    window.location.name = HTML.name;
     if(HTML.name == "startMenu"){
         startMenu();
+        continuing = true;
+    }
+    else{
+        lastScreen = HTML;
     }
     if(HTML.name == "intro"){
         switchToIntroScreen();
+        continuing = false;
     }
     if(HTML.name == "game"){
         startGameEngine();  
+        continuing = false;
+    }   
+    if(HTML.name.includes("building")){
+        if(!continuing){
+        mapPlayerX = playerX;
+        mapPlayerY = playerY;
+        if(HTML.name == "building3"){
+            playerY = -261.25
+            playerX = -112.5
+        }
+        }
+        else{
+            startGameEngine();
+        }
+        continuing = false;
     }
     reinitateDOM();
 }
